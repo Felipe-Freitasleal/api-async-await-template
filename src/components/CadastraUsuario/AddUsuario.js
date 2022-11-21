@@ -6,13 +6,14 @@ function AddUsuario(props) {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
 
-  const postNovoUsuario = () => {
-    const body = {
-      name: nome,
-      email
-    };
-    axios
-      .post(
+  const postNovoUsuario = async () => {
+    try {
+      const body = {
+        name: nome,
+        email
+      };
+
+      await axios.post(
         `https://us-central1-labenu-apis.cloudfunctions.net/labenusers/users`,
         body,
         {
@@ -21,15 +22,23 @@ function AddUsuario(props) {
           }
         }
       )
-      .then(() => {
-        alert("usuario criado!");
-        props.getUsuarios();
-        setEmail("");
-        setNome("");
-      })
-      .catch((err) => {
-        console.log("erro add", err.response);
-      });
+
+      alert("usuario criado!");
+      props.getUsuarios();
+      setEmail("");
+      setNome("");
+    } catch (err) {
+      console.log("erro add", err.response);
+    }
+    // .then(() => {
+    //   alert("usuario criado!");
+    //   props.getUsuarios();
+    //   setEmail("");
+    //   setNome("");
+    // })
+    // .catch((err) => {
+    //   console.log("erro add", err.response);
+    // });
   };
 
   return (
