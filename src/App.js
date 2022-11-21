@@ -21,9 +21,9 @@ function App() {
     getUsuarios();
   }, []);
 
-  const getUsuarios = () => {
-    axios
-      .get(
+  const getUsuarios = async () => {
+    try{
+      const response = await axios.get(
         "https://us-central1-labenu-apis.cloudfunctions.net/labenusers/users",
         {
           headers: {
@@ -31,17 +31,24 @@ function App() {
           },
         }
       )
-      .then((res) => {
-        setUsuarios(res.data);
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
+
+      setUsuarios(response.data)
+    } catch (error) {
+      console.log(error.response)
+    }
+    
+      //Uso a função sem ser assíncrona
+      // .then((res) => {
+      //   setUsuarios(res.data);
+      // })
+      // .catch((error) => {
+      //   console.log(error.response);
+      // });
   };
 
-  const pesquisaUsuario = (pesquisa) => {
-    axios
-      .get(
+  const pesquisaUsuario = async (pesquisa) => {
+    try {
+      const res = await axios.get(
         `https://us-central1-labenu-apis.cloudfunctions.net/labenusers/users/search?name=${pesquisa.nome}&email=${pesquisa.email}`,
         {
           headers: {
@@ -49,13 +56,19 @@ function App() {
           },
         }
       )
-      .then((res) => {
-        setUsuarios(res.data);
-        setPageFlow(3)
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
+
+      setUsuarios(res.data);
+      setPageFlow(3)
+    } catch (error) {
+      console.log(error.response);
+    }
+      // .then((res) => {
+      //   setUsuarios(res.data);
+      //   setPageFlow(3)
+      // })
+      // .catch((error) => {
+      //   console.log(error.response);
+      // });
   };
 
   const onChangeName = (e) => {
@@ -71,8 +84,9 @@ function App() {
       nome,
       email,
     };
-    setPesquisa(novaPesquisa);
-    pesquisaUsuario(pesquisa);
+    // setPesquisa(novaPesquisa);
+    pesquisaUsuario(novaPesquisa);
+
     setNome("")
     setEmail("")
     
